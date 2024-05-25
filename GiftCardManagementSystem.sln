@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34902.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.Admin", "GiftCardManagementSystem.Admin\GiftCardManagementSystem.Admin.csproj", "{3626EBD4-FA93-48B3-83C0-4A2B3290D61F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.DbService", "GiftCardManagementSystem.DbService\GiftCardManagementSystem.DbService.csproj", "{789F9467-B6D2-4C77-909B-63934267AAA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3626EBD4-FA93-48B3-83C0-4A2B3290D61F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3626EBD4-FA93-48B3-83C0-4A2B3290D61F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3626EBD4-FA93-48B3-83C0-4A2B3290D61F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3626EBD4-FA93-48B3-83C0-4A2B3290D61F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{789F9467-B6D2-4C77-909B-63934267AAA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{789F9467-B6D2-4C77-909B-63934267AAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{789F9467-B6D2-4C77-909B-63934267AAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{789F9467-B6D2-4C77-909B-63934267AAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B2F80E4-687D-44F7-93EE-20D671573FF7}
+	EndGlobalSection
+EndGlobal
