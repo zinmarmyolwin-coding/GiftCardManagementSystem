@@ -1,11 +1,12 @@
 ﻿using GiftCardManagementSystem.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GiftCardManagementSystem.APIGateway.Controllers
 {
-
+    [Authorize]
     [Route("api/service")]
     [ApiController]
     public class ApiGatewayController : ControllerBase
