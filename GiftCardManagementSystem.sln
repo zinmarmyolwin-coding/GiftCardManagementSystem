@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.Ad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.DbService", "GiftCardManagementSystem.DbService\GiftCardManagementSystem.DbService.csproj", "{789F9467-B6D2-4C77-909B-63934267AAA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftCardManagementSystem.APIGateway", "GiftCardManagementSystem.APIGateway\GiftCardManagementSystem.APIGateway.csproj", "{EBCAA9F6-4A74-44E1-A832-63177C18F68F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftCardManagementSystem.Service", "GiftCardManagementSystem.Service\GiftCardManagementSystem.Service.csproj", "{A7380149-1CB5-44FE-8D64-8FC03925F4C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{789F9467-B6D2-4C77-909B-63934267AAA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{789F9467-B6D2-4C77-909B-63934267AAA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{789F9467-B6D2-4C77-909B-63934267AAA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
