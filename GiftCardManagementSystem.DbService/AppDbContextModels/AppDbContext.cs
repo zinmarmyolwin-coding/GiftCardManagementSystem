@@ -10,20 +10,35 @@ public partial class AppDbContext : DbContext
     public AppDbContext()
     {
     }
+
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
 
+    public virtual DbSet<TblAdminuser> TblAdminusers { get; set; }
+
     public virtual DbSet<TblGiftcard> TblGiftcards { get; set; }
 
     public virtual DbSet<TblPaymentmethod> TblPaymentmethods { get; set; }
-
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
             .UseCollation("utf8mb4_0900_ai_ci")
             .HasCharSet("utf8mb4");
+
+        modelBuilder.Entity<TblAdminuser>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("tbl_adminuser");
+
+            entity.Property(e => e.Password).HasMaxLength(100);
+            entity.Property(e => e.UserId).HasMaxLength(40);
+            entity.Property(e => e.UserName).HasMaxLength(50);
+            entity.Property(e => e.UserRole).HasMaxLength(50);
+        });
 
         modelBuilder.Entity<TblGiftcard>(entity =>
         {
