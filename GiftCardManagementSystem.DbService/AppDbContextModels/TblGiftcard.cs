@@ -5,7 +5,7 @@ namespace GiftCardManagementSystem.DbService.AppDbContextModels;
 
 public partial class TblGiftcard
 {
-    public int Id { get; set; }
+    public int GiftCardId { get; set; }
 
     public string? Title { get; set; }
 
@@ -16,4 +16,16 @@ public partial class TblGiftcard
     public DateTime? ExpiryDate { get; set; }
 
     public decimal? Amount { get; set; }
+
+    public int Quantity { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public string? CreatedUserId { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public string? UpdatedUserId { get; set; }
+
+    public bool? IsActive { get; set; }
 }

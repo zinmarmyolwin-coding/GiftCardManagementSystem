@@ -1,0 +1,22 @@
+﻿@model GiftCardManagementSystem.Admin.Models.Admin.SigninRequestModel
+@{
+    ViewData["Title"] = "Signin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Signin</h1>
+
+@using (Html.BeginForm("Admin", "AdminRegister", FormMethod.Post))
+{
+    <div>
+        @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User Name'" })
+        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.TextBoxFor(m => m.Password, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User Name'" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        @* <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required /> *@
+    </div>
+    <input type="submit" value="Sign In" class="login-btn" />
+}

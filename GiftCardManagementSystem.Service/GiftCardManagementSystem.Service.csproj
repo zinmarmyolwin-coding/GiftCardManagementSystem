@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GiftCardManagementSystem.DbService\GiftCardManagementSystem.DbService.csproj" />
+  </ItemGroup>
+
 </Project>

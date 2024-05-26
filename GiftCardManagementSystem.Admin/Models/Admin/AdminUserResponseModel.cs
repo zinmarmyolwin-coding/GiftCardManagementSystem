@@ -1,18 +1,12 @@
-﻿namespace GiftCardManagementSystem.Admin.Models.Admin
-{
-    public class AdminUserRegisterRequestModel
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string UserRole { get; set; }
-    }
-    public class SigninRequestModel
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace GiftCardManagementSystem.Admin.Models.Admin
+{
     public class AdminUserResponseModel : BaseResponseModel
     {
+        [Required]
+        public string UserName {  get; set; }
+        [Required]
+        public string Password {  get; set; }
     }
 }

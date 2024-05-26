@@ -1,3 +1,4 @@
+using GiftCardManagementSystem.Admin.Features.Admin;
 using GiftCardManagementSystem.DbService.AppDbContextModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -5,12 +6,6 @@ using Microsoft.Extensions.Options;
 var builder = WebApplication.CreateBuilder(args);
 
 #region Add DB Context
-
-//var connectionString = builder.Configuration.GetConnectionString("DbConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-//builder.Services.AddDbContext<AppDbContext>(options =>
-// options.UseSqlServer(connectionString));
-//options.UseSqlServer(builder.Configuration.GetSection("ConnectionStrings:DbConnection").Value));
-
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -21,8 +16,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 #endregion
 
+builder.Services.AddScoped<AdminService>();
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 
@@ -43,6 +41,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    //pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Admin}/{action=Signin}/{id?}");
 
 app.Run();

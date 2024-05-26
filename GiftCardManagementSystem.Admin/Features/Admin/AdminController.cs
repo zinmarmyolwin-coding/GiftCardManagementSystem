@@ -1,9 +1,11 @@
 ﻿using GiftCardManagementSystem.Admin.Models.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GiftCardManagementSystem.Admin.Features.Admin
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly AdminService _adminService;
@@ -18,6 +20,14 @@ namespace GiftCardManagementSystem.Admin.Features.Admin
         {
             var result = _adminService.AdminRegister(reqModel);
             return View(result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Signin(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View(new SigninRequestModel());
         }
 
         [HttpPost]
