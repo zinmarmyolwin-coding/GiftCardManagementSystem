@@ -1,9 +1,11 @@
-using GiftCardManagementSystem.Service;
+using GiftCardManagementSystem.DbService.AppDbContextModels;
+using GiftCardManagementSystem.Repository.IRepository;
+using GiftCardManagementSystem.Repository.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +15,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<GiftCardService>();
+#region Add DB Context
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetSection("ConnectionStrings:DbConnection").Value;
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.EnableSensitiveDataLogging();
+}, ServiceLifetime.Transient);
+
+#endregion
+
+builder.Services.AddScoped<IGiftCardRepository, GiftCardRepository>();
+
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

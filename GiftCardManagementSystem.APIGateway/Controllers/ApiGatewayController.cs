@@ -1,8 +1,7 @@
-﻿using GiftCardManagementSystem.Service;
+﻿using GiftCardManagementSystem.Model.GiftCard;
+using GiftCardManagementSystem.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GiftCardManagementSystem.APIGateway.Controllers
 {
@@ -12,43 +11,34 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
     public class ApiGatewayController : ControllerBase
     {
 
-        private readonly GiftCardService giftCardService;
+        private readonly IGiftCardRepository _giftCardRepository;
 
-        public ApiGatewayController(GiftCardService giftCardService)
+        public ApiGatewayController(IGiftCardRepository giftCardRepository)
         {
-            this.giftCardService = giftCardService;
+            _giftCardRepository = giftCardRepository;
         }
 
-        // GET: api/<ApiGatewayController>
         [HttpGet]
+        [Route("Get")]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<ApiGatewayController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet]
+        [Route("GiftCardlist")]
+        public GiftcardResponseModel GiftCardlist()
         {
-            return "value";
+            var result = _giftCardRepository.GiftCardlist();
+            return result;
         }
 
-        // POST api/<ApiGatewayController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        [Route("GetByGiftCardId")]
+        public GiftcardResponseModel GetByGiftCardId(int id)
         {
-        }
-
-        // PUT api/<ApiGatewayController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ApiGatewayController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var result = _giftCardRepository.GetByGiftCardId(id);
+            return result;
         }
     }
 }

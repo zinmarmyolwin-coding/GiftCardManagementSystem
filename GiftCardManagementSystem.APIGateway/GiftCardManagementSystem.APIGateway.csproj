@@ -9,13 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Controllers\ApiGatewayController.cs~RFb8618ab.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GiftCardManagementSystem.Service\GiftCardManagementSystem.Service.csproj" />
+    <ProjectReference Include="..\GiftCardManagementSystem.Model\GiftCardManagementSystem.Model.csproj" />
+    <ProjectReference Include="..\GiftCardManagementSystem.Repository\GiftCardManagementSystem.Repository.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,11 +5,13 @@ VisualStudioVersion = 17.10.34902.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.Admin", "GiftCardManagementSystem.Admin\GiftCardManagementSystem.Admin.csproj", "{3626EBD4-FA93-48B3-83C0-4A2B3290D61F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.DbService", "GiftCardManagementSystem.DbService\GiftCardManagementSystem.DbService.csproj", "{789F9467-B6D2-4C77-909B-63934267AAA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.Infrastructure", "GiftCardManagementSystem.DbService\GiftCardManagementSystem.Infrastructure.csproj", "{789F9467-B6D2-4C77-909B-63934267AAA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftCardManagementSystem.APIGateway", "GiftCardManagementSystem.APIGateway\GiftCardManagementSystem.APIGateway.csproj", "{EBCAA9F6-4A74-44E1-A832-63177C18F68F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftCardManagementSystem.APIGateway", "GiftCardManagementSystem.APIGateway\GiftCardManagementSystem.APIGateway.csproj", "{EBCAA9F6-4A74-44E1-A832-63177C18F68F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftCardManagementSystem.Service", "GiftCardManagementSystem.Service\GiftCardManagementSystem.Service.csproj", "{A7380149-1CB5-44FE-8D64-8FC03925F4C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftCardManagementSystem.Repository", "GiftCardManagementSystem.Repository\GiftCardManagementSystem.Repository.csproj", "{8A983D7B-FB72-4342-9A43-A96112B5B445}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftCardManagementSystem.Model", "GiftCardManagementSystem.Model\GiftCardManagementSystem.Model.csproj", "{5F627228-7CF1-47F0-A728-B5CCCA20DB5F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +31,14 @@ Global
 		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBCAA9F6-4A74-44E1-A832-63177C18F68F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7380149-1CB5-44FE-8D64-8FC03925F4C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A983D7B-FB72-4342-9A43-A96112B5B445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A983D7B-FB72-4342-9A43-A96112B5B445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A983D7B-FB72-4342-9A43-A96112B5B445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A983D7B-FB72-4342-9A43-A96112B5B445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F627228-7CF1-47F0-A728-B5CCCA20DB5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F627228-7CF1-47F0-A728-B5CCCA20DB5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F627228-7CF1-47F0-A728-B5CCCA20DB5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F627228-7CF1-47F0-A728-B5CCCA20DB5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
