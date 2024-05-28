@@ -2,9 +2,9 @@
 using GiftCardManagementSystem.Admin.Models.Admin;
 using GiftCardManagementSystem.Admin.Models;
 using GiftCardManagementSystem.Admin.Models.GiftCard;
-using GiftCardManagementSystem.DbService.AppDbContextModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 namespace GiftCardManagementSystem.Admin.Features.GiftCard
 {

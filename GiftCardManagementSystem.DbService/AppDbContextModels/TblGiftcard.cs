@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GiftCardManagementSystem.DbService.AppDbContextModels;
+namespace GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 public partial class TblGiftcard
 {
@@ -12,6 +12,8 @@ public partial class TblGiftcard
     public string? Description { get; set; }
 
     public string? GiftCardNo { get; set; }
+
+    public int? CashbackPoint { get; set; }
 
     public DateTime? ExpiryDate { get; set; }
 
@@ -28,4 +30,6 @@ public partial class TblGiftcard
     public string? UpdatedUserId { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public decimal? CashbackAmount { get; set; }
 }

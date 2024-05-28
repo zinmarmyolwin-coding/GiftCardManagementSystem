@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GiftCardManagementSystem.DbService.AppDbContextModels;
+namespace GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 public partial class TblUser
 {
@@ -12,4 +12,8 @@ public partial class TblUser
     public string PhoneNo { get; set; } = null!;
 
     public int? MaximunLimit { get; set; }
+
+    public int? CashbackPoint { get; set; }
+
+    public decimal? CashbackAmount { get; set; }
 }

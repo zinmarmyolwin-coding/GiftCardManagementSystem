@@ -1,5 +1,5 @@
 using GiftCardManagementSystem.Admin.Models;
-using GiftCardManagementSystem.DbService.AppDbContextModels;
+using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

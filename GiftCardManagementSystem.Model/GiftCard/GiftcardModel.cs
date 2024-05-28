@@ -21,15 +21,10 @@ namespace GiftCardManagementSystem.Model.GiftCard
         public decimal? Amount { get; set; }
 
         public int Quantity { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
-
-        public string? CreatedUserId { get; set; }
-
-        public DateTime? UpdatedDate { get; set; }
-
-        public string? UpdatedUserId { get; set; }
-
+        public int CashbackPoint { get; set; }
+        public decimal CashbackAmount { get; set; }
+       
         public bool? IsActive { get; set; }
+        public bool? IsOutOfStock { get; set; }
     }
 }

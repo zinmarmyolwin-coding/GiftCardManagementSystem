@@ -4,9 +4,11 @@ namespace GiftCardManagementSystem.Repository.IRepository
 {
     public interface IGiftCardRepository
     {
-        GiftcardResponseModel GiftCardlist();
-        GiftcardResponseModel GetByGiftCardId(int id);
-        //void Add(Customer customer);
-        //void Update(Customer customer);
+        Task<GiftcardResponseModel> GiftCardlistAsync();
+        Task<GiftcardResponseModel> GetByGiftCardIdAsync(string raw);
+        Task<CheckoutResponseModel> CheckoutListAsync(string raw);
+        Task<PaymentMethodResponseModel> PaymentMethodListAsync();
+        Task<PaymentResponseModel> ConfirmPaymentAsync(string raw);
+        Task<TranHistoryResponseModel> PurchaseHistoryAsync(string raw);
     }
 }

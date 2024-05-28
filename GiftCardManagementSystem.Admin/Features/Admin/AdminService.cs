@@ -1,7 +1,7 @@
 ﻿using GiftCardManagementSystem.Admin.Helper;
 using GiftCardManagementSystem.Admin.Models;
 using GiftCardManagementSystem.Admin.Models.Admin;
-using GiftCardManagementSystem.DbService.AppDbContextModels;
+using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 using System.Security.Cryptography;
 using System.Text;
 

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Ulid" Version="1.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GiftCardManagementSystem.DbService\GiftCardManagementSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\GiftCardManagementSystem.Model\GiftCardManagementSystem.Model.csproj" />
   </ItemGroup>

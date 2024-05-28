@@ -11,4 +11,9 @@ namespace GiftCardManagementSystem.Model.GiftCard
         public List<GiftcardModel> GiftcardList { get; set; }
         public GiftcardModel Giftcard { get; set; }
     }
+
+    public class GiftcardRequestModel
+    {
+        public int Id { get; set; }
+    }
 }

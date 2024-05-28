@@ -1,4 +1,4 @@
-using GiftCardManagementSystem.DbService.AppDbContextModels;
+using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

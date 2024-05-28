@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GiftCardManagementSystem.APIGateway.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -15,15 +17,22 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly RabbitMqConcurrencyService _concurrencyService;
 
-        public AuthController(IConfiguration configuration)
+        private static readonly Dictionary<string, string> RefreshTokens = new Dictionary<string, string>();
+
+        public AuthController(IConfiguration configuration,
+            RabbitMqConcurrencyService concurrencyService
+            )
         {
             _configuration = configuration;
+            _concurrencyService = concurrencyService;
         }
 
         [HttpPost("GetToken")]
         public IActionResult GetToken([FromBody] LoginModel model)
         {
+            _concurrencyService.PublishMessage("refresh_request");
             // Validate username and password
             if (!ValidateUser(model.Username, model.Password))
             {
@@ -33,34 +42,47 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
             var accessToken = GenerateJwtToken(model.Username);
             var refreshToken = GenerateRefreshToken();
 
-            // Store the refresh token securely, e.g., in a database associated with the user
+            // Store the refresh token securely
+            StoreRefreshToken(model.Username, refreshToken);
 
-            // Calculate expiration date for refresh token
-            var refreshTokenExpiration = DateTime.UtcNow.AddMinutes(1); // Example: Refresh token expires in 1 minute
-            var tokenExpiration = DateTime.UtcNow.AddMinutes(1); // Example: Refresh token expires in 1 minute
+            // Set refresh token as HttpOnly cookie
+            SetRefreshTokenCookie(refreshToken);
+
+            // Calculate expiration date for the access token
+            var tokenExpiration = DateTime.UtcNow.AddDays(int.Parse(_configuration["Jwt:RefreshTokenValidityInDays"]));
 
             return Ok(new
             {
                 AccessToken = accessToken,
-                TokenExirpedDate = tokenExpiration,
-                RefreshToken = refreshToken,
-                RefreshTokenExpiration = refreshTokenExpiration
+                TokenExpiration = tokenExpiration
             });
         }
 
         [HttpPost("RefreshToken")]
-        public IActionResult RefreshToken([FromBody] RefreshTokenRequestModel model)
+        public IActionResult RefreshToken()
         {
+            if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
+            {
+                return BadRequest("Refresh token not found");
+            }
+
             // Validate the refresh token
-            if (!ValidateRefreshToken(model.RefreshToken))
+            var username = ValidateRefreshToken(refreshToken);
+            if (string.IsNullOrEmpty(username))
             {
                 return BadRequest("Invalid refresh token");
             }
 
-            // If the refresh token is valid, generate a new access token
-            var newAccessToken = GenerateJwtToken(GetUsernameFromRefreshToken(model.RefreshToken));
+            // Generate a new access token
+            var newAccessToken = GenerateJwtToken(username);
+            var newRefreshToken = GenerateRefreshToken();
 
-            // Return the new access token to the client
+            // Store the new refresh token securely
+            StoreRefreshToken(username, newRefreshToken);
+
+            // Update the refresh token cookie
+            SetRefreshTokenCookie(newRefreshToken);
+
             return Ok(new { AccessToken = newAccessToken });
         }
 
@@ -76,8 +98,7 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
-
-           int.TryParse(_configuration["JWT:TokenValidityInMinutes"], out int tokenValidityInMinutes);
+            int.TryParse(_configuration["Jwt:TokenValidityInMinutes"], out int tokenValidityInMinutes);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -85,7 +106,7 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
                 {
                     new Claim(ClaimTypes.Name, username)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(tokenValidityInMinutes), // Token expiration time
+                Expires = DateTime.UtcNow.AddMinutes(tokenValidityInMinutes),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -95,7 +116,6 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
 
         private string GenerateRefreshToken()
         {
-            // Generate a random refresh token
             var randomNumber = new byte[32];
             using (var rng = RandomNumberGenerator.Create())
             {
@@ -104,18 +124,41 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
             }
         }
 
-        private bool ValidateRefreshToken(string refreshToken)
+        private void StoreRefreshToken(string username, string refreshToken)
         {
-            // Your refresh token validation logic here
-            // For demonstration purposes, always return true
-            return true;
+            if (RefreshTokens.ContainsKey(username))
+            {
+                RefreshTokens[username] = refreshToken;
+            }
+            else
+            {
+                RefreshTokens.Add(username, refreshToken);
+            }
         }
 
-        private string GetUsernameFromRefreshToken(string refreshToken)
+        private string ValidateRefreshToken(string refreshToken)
         {
-            // Your logic to extract username from refresh token
-            // For demonstration purposes, assume username is stored in the refresh token
-            return "Admin";
+            foreach (var kvp in RefreshTokens)
+            {
+                if (kvp.Value == refreshToken)
+                {
+                    return kvp.Key;
+                }
+            }
+            return null;
+        }
+
+        private void SetRefreshTokenCookie(string refreshToken)
+        {
+            var refreshTokenExpiration = DateTime.UtcNow.AddDays(int.Parse(_configuration["Jwt:RefreshTokenValidityInDays"]));
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = refreshTokenExpiration,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            };
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
     }
 
@@ -123,10 +166,5 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
     {
         public string Username { get; set; }
         public string Password { get; set; }
-    }
-
-    public class RefreshTokenRequestModel
-    {
-        public string RefreshToken { get; set; }
     }
 }

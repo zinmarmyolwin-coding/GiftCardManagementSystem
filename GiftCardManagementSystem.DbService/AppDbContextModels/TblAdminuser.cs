@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GiftCardManagementSystem.DbService.AppDbContextModels;
+namespace GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 public partial class TblAdminuser
 {

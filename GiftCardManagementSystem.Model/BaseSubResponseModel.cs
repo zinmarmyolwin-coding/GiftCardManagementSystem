@@ -41,5 +41,13 @@ namespace GiftCardManagementSystem.Model
                 RespType = EnumRespType.ME
             };
         }
+
+        public static ResponseModel GetResponse(string message)
+        {
+            return new ResponseModel()
+            {
+                RespDesp = message,
+            };
+        }
     }
 }

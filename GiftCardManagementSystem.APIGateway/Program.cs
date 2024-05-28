@@ -1,4 +1,5 @@
-using GiftCardManagementSystem.DbService.AppDbContextModels;
+using GiftCardManagementSystem.APIGateway.Service;
+using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 using GiftCardManagementSystem.Repository.IRepository;
 using GiftCardManagementSystem.Repository.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using RabbitMQ.Client;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,8 +28,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 #endregion
 
-builder.Services.AddScoped<IGiftCardRepository, GiftCardRepository>();
+#region Configure RabbitMQ Connection
 
+var connectionUrl = configuration["RabbitMq:RabbitMqConnectionString"];
+var factory = new ConnectionFactory { Uri = new Uri(connectionUrl) };
+var connection = factory.CreateConnection();
+var channel = connection.CreateModel();
+builder.Services.AddSingleton(new RabbitMqConcurrencyService(channel, maxConcurrentRequests: 5));
+
+#endregion
+
+builder.Services.AddScoped<ApiGateWayService>();
+builder.Services.AddScoped<IGiftCardRepository, GiftCardRepository>();
 
 // Configure JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -70,5 +82,12 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+#region Rebbit
+
+//var concurrencyService = app.Services.GetRequiredService<RabbitMqConcurrencyService>();
+//concurrencyService.Start();
+
+#endregion
 
 app.Run();

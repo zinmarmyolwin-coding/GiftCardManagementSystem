@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace GiftCardManagementSystem.DbService.AppDbContextModels;
+namespace GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 public partial class AppDbContext : DbContext
 {
@@ -24,8 +24,10 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TblTransactionhistory> TblTransactionhistories { get; set; }
 
+    public virtual DbSet<TblTransactionhistorydetail> TblTransactionhistorydetails { get; set; }
+
     public virtual DbSet<TblUser> TblUsers { get; set; }
-   
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -54,6 +56,7 @@ public partial class AppDbContext : DbContext
 
             entity.Property(e => e.GiftCardId).HasColumnName("GiftCardID");
             entity.Property(e => e.Amount).HasPrecision(10, 2);
+            entity.Property(e => e.CashbackAmount).HasPrecision(10, 2);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.CreatedUserId).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(500);
@@ -71,18 +74,41 @@ public partial class AppDbContext : DbContext
             entity.ToTable("tbl_paymentmethod");
 
             entity.Property(e => e.Discount).HasPrecision(5, 2);
+            entity.Property(e => e.PaymentMethodCode).HasMaxLength(50);
             entity.Property(e => e.PaymentMethodName).HasMaxLength(100);
         });
 
         modelBuilder.Entity<TblTransactionhistory>(entity =>
         {
-            entity.HasKey(e => e.TransactionHistoryId).HasName("PRIMARY");
+            entity.HasKey(e => e.TranHistoryId).HasName("PRIMARY");
 
             entity.ToTable("tbl_transactionhistory");
 
-            entity.Property(e => e.TransactionHistoryId).ValueGeneratedNever();
+            entity.Property(e => e.CashbackAmount).HasPrecision(10, 2);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.DiscountAmount).HasPrecision(10, 2);
+            entity.Property(e => e.NetAmount).HasPrecision(10, 2);
+            entity.Property(e => e.PaymentCode).HasMaxLength(50);
+            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.TotalAmount).HasPrecision(10, 2);
+            entity.Property(e => e.TranId).HasMaxLength(50);
+            entity.Property(e => e.TransactionDate).HasColumnType("datetime");
+            entity.Property(e => e.UserId).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TblTransactionhistorydetail>(entity =>
+        {
+            entity.HasKey(e => e.TransactionHistoryDetailId).HasName("PRIMARY");
+
+            entity.ToTable("tbl_transactionhistorydetail");
+
             entity.Property(e => e.Amount).HasPrecision(10, 2);
-            entity.Property(e => e.GiftCardCode).HasMaxLength(50);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.GiftCardNo).HasMaxLength(50);
+            entity.Property(e => e.Status).HasMaxLength(30);
+            entity.Property(e => e.ToUserId).HasMaxLength(50);
+            entity.Property(e => e.TotalAmount).HasPrecision(10, 2);
+            entity.Property(e => e.TranId).HasMaxLength(50);
             entity.Property(e => e.TransactionDate).HasColumnType("datetime");
             entity.Property(e => e.UserId).HasMaxLength(50);
         });
@@ -94,6 +120,7 @@ public partial class AppDbContext : DbContext
             entity.ToTable("tbl_user");
 
             entity.Property(e => e.UserId).HasMaxLength(50);
+            entity.Property(e => e.CashbackAmount).HasPrecision(10, 2);
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.PhoneNo).HasMaxLength(20);
         });

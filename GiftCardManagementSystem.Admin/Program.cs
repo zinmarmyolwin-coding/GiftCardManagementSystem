@@ -1,5 +1,5 @@
 using GiftCardManagementSystem.Admin.Features.Admin;
-using GiftCardManagementSystem.DbService.AppDbContextModels;
+using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
