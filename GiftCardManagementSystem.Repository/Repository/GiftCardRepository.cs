@@ -29,6 +29,7 @@ namespace GiftCardManagementSystem.Repository.Repository
                 var giftcardList = await _db.TblGiftcards.ToListAsync();
                 model.GiftcardList = giftcardList.ConvertAll(x => new GiftcardModel
                 {
+                    GiftCardId = x.GiftCardId,
                     Title = x.Title,
                     Description = x.Description,
                     GiftCardNo = x.GiftCardNo,
@@ -102,7 +103,8 @@ namespace GiftCardManagementSystem.Repository.Repository
                             GiftCardCode = item.GiftCardCode,
                             Name = item.Name,
                             Quantity = item.Quantity,
-                            Amount = item.Quantity * item.Amount,
+                            Amount = item.Amount,
+                            TotalAmount = item.Quantity * item.Amount,
                             CashbackPoint = cashbackPoint,
                             CashbackAmount = (cashbackPoint * giftcard.CashbackAmount)
                         };
@@ -110,15 +112,7 @@ namespace GiftCardManagementSystem.Repository.Repository
                     }
                 }
 
-                //var checkoutList = reqModel.ckeckoutList.Select(x => new CheckoutModel
-                //{
-                //    GiftCardCode = x.GiftCardCode,
-                //    Name = x.Name,
-                //    Quantity = x.Quantity,
-                //    Amount = x.Quantity * x.Amount
-                //}).ToList();
-
-                decimal totalAmount = checkoutList.Sum(x => x.Amount);
+                decimal totalAmount = checkoutList.Sum(x => x.TotalAmount);
                 decimal? cashBackAmount = checkoutList.Sum(x => x.CashbackAmount);
                 decimal? cashBackPoint = checkoutList.Sum(x => x.CashbackPoint);
 
