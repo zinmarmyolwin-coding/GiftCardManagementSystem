@@ -8,12 +8,11 @@ using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 namespace GiftCardManagementSystem.Admin.Features.GiftCard
 {
-    [Authorize]
-    public class PaymentService
+    public class GiftCardService
     {
         private readonly AppDbContext _db;
 
-        public PaymentService(AppDbContext db)
+        public GiftCardService(AppDbContext db)
         {
             _db = db;
         }
@@ -23,16 +22,19 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
             var model = new GiftCardResponseModel();
             try
             {
-                var giftcards = _db.TblGiftcards.Where(x => x.IsActive == true).ToList();
+                var giftcards = _db.TblGiftcards.ToList();
                 model.GiftCardList = giftcards.ConvertAll(x => new GiftCardModel
                 {
                     GiftCardId = x.GiftCardId,
                     Title = x.Title,
                     Description = x.Description,
                     GiftCardNo = x.GiftCardNo,
-                    ExpiryDate = x.ExpiryDate.ToString(),
+                    ExpiryDate = x.ExpiryDate.ToString()!,
                     Amount = x.Amount,
                     Quantity = x.Quantity,
+                    IsActive = (bool)x.IsActive!,
+                    CashbackPoint =(int) x.CashbackPoint!,
+                    CashbackAmount =(decimal) x.CashbackAmount!,
 
                 }).ToList();
 
@@ -54,7 +56,7 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
                 bool isExist = _db.TblGiftcards.Any(x => x.Title == reqModel.Title
                 && x.IsActive == true);
 
-                if (true)
+                if (isExist)
                 {
                     model.Response = SubResponseModel.SuccessResponse("Dulplicate GiftCard Number.", RespType.MS);
                     goto Result;
@@ -68,9 +70,9 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
                     ExpiryDate = Convert.ToDateTime(reqModel.ExpiryDate),
                     Amount = reqModel.Amount,
                     Quantity = reqModel.Quantity,
-                    CreatedDate = reqModel.CreatedDate,
-                    CreatedUserId = reqModel.CreatedUserId,
-                    IsActive = true,
+                    IsActive = reqModel.IsActive,
+                    CashbackPoint = reqModel.CashbackPoint,
+                    CashbackAmount = reqModel.CashbackAmount,
                 };
 
                 _db.TblGiftcards.Add(giftcard);
@@ -87,12 +89,12 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
             return model;
         }
 
-        public GiftCardResponseModel GiftCardById(GiftCardRequestModel reqModel)
+        public GiftCardResponseModel GiftCardById(int id)
         {
             var model = new GiftCardResponseModel();
             try
             {
-                var giftCard = _db.TblGiftcards.FirstOrDefault(x => x.GiftCardId == reqModel.GiftCardId
+                var giftCard = _db.TblGiftcards.FirstOrDefault(x => x.GiftCardId == id
                 && x.IsActive == true);
                 
                 if (giftCard is null) 
@@ -101,14 +103,17 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
                     goto Result;
                 }
 
-                model.GiftCard = new GiftCardModel
+                model.GiftCard = new GiftCardRequestModel
                 {
+                    GiftCardId = giftCard.GiftCardId,
                     Title = giftCard.Title,
                     Description = giftCard.Description,
-                    ExpiryDate = reqModel.ExpiryDate.ToString(),
-                    Amount = reqModel.Amount,
-                    Quantity = reqModel.Quantity,
-                    IsActive =(bool)reqModel.IsActive,
+                    CashbackPoint = (int)giftCard.CashbackPoint!,
+                    CashbackAmount =(decimal) giftCard.CashbackAmount!,
+                    ExpiryDate = giftCard.ExpiryDate.ToString()!,
+                    Amount = giftCard.Amount,
+                    Quantity = giftCard.Quantity,
+                    IsActive =(bool)giftCard.IsActive!,
                 };
             }
             catch (Exception ex)
@@ -125,12 +130,12 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
             try
             {
                 TblGiftcard? giftcard = _db.TblGiftcards.FirstOrDefault(x => x.GiftCardId == reqModel.GiftCardId 
-                && x.IsActive == false);
+                && x.IsActive == true);
 
                 bool isExist = _db.TblGiftcards.Any(x => x.Title == reqModel.Title
                 && x.IsActive == true && x.GiftCardId != reqModel.GiftCardId);
 
-                if (true)
+                if (isExist)
                 {
                     model.Response = SubResponseModel.SuccessResponse("Dulplicate GiftCard Number.", RespType.MS);
                     goto Result;
@@ -142,9 +147,9 @@ namespace GiftCardManagementSystem.Admin.Features.GiftCard
                 giftcard.Amount = reqModel.Amount;
                 giftcard.Quantity = reqModel.Quantity;
                 giftcard.IsActive = reqModel.IsActive;
-                giftcard.UpdatedDate = DateTime.Now;
-                giftcard.UpdatedUserId = reqModel.UpdatedUserId;
-
+                giftcard.CashbackPoint = reqModel.CashbackPoint;
+                giftcard.CashbackAmount = reqModel.CashbackAmount;
+                
                 _db.TblGiftcards.Update(giftcard);
                 _db.SaveChanges();
 

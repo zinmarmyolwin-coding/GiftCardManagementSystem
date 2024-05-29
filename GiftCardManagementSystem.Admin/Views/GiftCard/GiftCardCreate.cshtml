@@ -1,0 +1,53 @@
+﻿@model GiftCardManagementSystem.Admin.Models.GiftCard.GiftCardRequestModel
+
+<h2 class="mb-4">Create Gift Card</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <p style="color:red">@ViewBag.ErrorMessage</p>
+        }
+        @using (Html.BeginForm("GiftCardCreate", "GiftCard", FormMethod.Post))
+        {
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control", @placeholder = "Title" })
+                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "Description" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.ExpiryDate, new { @class = "form-label" })
+                <input type="text" id="expiryDate" name="ExpiryDate" class="form-control" placeholder="Expiry Date" />
+                @Html.ValidationMessageFor(m => m.ExpiryDate, "", new { @class = "text-danger" })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Amount, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @placeholder = "Amount" })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Quantity, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", @placeholder = "Quantity", type = "number", min = "0" })
+                @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.CashbackPoint, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.CashbackPoint, new { @class = "form-control", @placeholder = "Cashback Point", type = "number", min = "0" })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.CashbackAmount, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.CashbackAmount, new { @class = "form-control", @placeholder = "Cashback Amount", type = "number", min = "0" })
+            </div>
+            <div class="form-check mb-3">
+                @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input" })
+                @Html.LabelFor(m => m.IsActive, new { @class = "form-check-label" })
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        }
+    </div>
+</div>

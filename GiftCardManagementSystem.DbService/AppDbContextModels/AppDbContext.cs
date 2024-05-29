@@ -36,12 +36,12 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<TblAdminuser>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("tbl_adminuser");
+            entity.HasKey(e => e.UserId).HasName("PRIMARY");
 
-            entity.Property(e => e.Password).HasMaxLength(100);
+            entity.ToTable("tbl_adminuser");
+
             entity.Property(e => e.UserId).HasMaxLength(40);
+            entity.Property(e => e.Password).HasMaxLength(100);
             entity.Property(e => e.UserName).HasMaxLength(50);
             entity.Property(e => e.UserRole).HasMaxLength(50);
         });
@@ -57,14 +57,10 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.GiftCardId).HasColumnName("GiftCardID");
             entity.Property(e => e.Amount).HasPrecision(10, 2);
             entity.Property(e => e.CashbackAmount).HasPrecision(10, 2);
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.CreatedUserId).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
             entity.Property(e => e.GiftCardNo).HasMaxLength(50);
             entity.Property(e => e.Title).HasMaxLength(300);
-            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedUserId).HasMaxLength(50);
         });
 
         modelBuilder.Entity<TblPaymentmethod>(entity =>

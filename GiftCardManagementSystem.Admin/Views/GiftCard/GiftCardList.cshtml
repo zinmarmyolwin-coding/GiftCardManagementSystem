@@ -1,0 +1,54 @@
+﻿@model GiftCardManagementSystem.Admin.Models.GiftCard.GiftCardResponseModel
+@{
+    bool ischecked = false;
+}
+
+<h2 class="mb-4">GiftCard List</h2>
+
+@Html.ActionLink("Create", "GiftCardCreate", "GiftCard", null, new { @class = "btn btn-primary" })
+<br />
+<br />
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>GiftCardNo</th>
+                <th>ExpiryDate</th>
+                <th>Amount</th>
+                <th>Quantity</th>
+                <th>CashbackPoint</th>
+                <th>CashbackAmount</th>
+                <th>IsActive</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model.GiftCardList?.Count > 0)
+            {
+                @foreach (var user in Model.GiftCardList)
+                {
+                    <tr>
+                        <td>@user.Title</td>
+                        <td>@user.Description</td>
+                        <td>@user.GiftCardNo</td>
+                        <td>@user.ExpiryDate</td>
+                        <td>@user.Amount</td>
+                        <td>@user.Quantity</td>
+                        <td>@user.CashbackPoint</td>
+                        <td>@user.CashbackAmount</td>
+                        <td>
+                            <input type="checkbox" class="checkbox" disabled="true" @(user.IsActive ? "checked" : "") />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "GiftCardEdit", "GiftCard", new { id = @user.GiftCardId }, new { @class = "btn btn-primary" })
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>

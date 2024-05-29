@@ -1,0 +1,43 @@
+﻿@model GiftCardManagementSystem.Admin.Models.User.UserResponseModel
+@{
+    int counter = 0;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 class="mb-4">User List</h2>
+
+@Html.ActionLink("Create", "UserCreate", "User", null, new { @class = "btn btn-primary" })
+<br />
+<br />
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>User Name</th>
+                <th>Phone</th>
+                <th>Max Limit</th>
+                <th>Cashback Point</th>
+                <th>Cashback Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model.UserList?.Count > 0)
+            {
+                @foreach (var user in Model.UserList)
+                {
+                    counter++;
+                    <tr>
+                        <td>@counter</td>
+                        <td>@user.Name</td>
+                        <td>@user.Phone</td>
+                        <td>@user.MaxLimit</td>
+                        <td>@user.CashbackPoint</td>
+                        <td>@user.CashbackAmount</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

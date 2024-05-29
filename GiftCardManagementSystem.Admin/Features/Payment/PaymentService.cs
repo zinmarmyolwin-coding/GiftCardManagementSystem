@@ -9,7 +9,6 @@ using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 
 namespace GiftCardManagementSystem.Admin.Features.Payment
 {
-    [Authorize]
     public class PaymentService
     {
         private readonly AppDbContext _db;
@@ -49,16 +48,18 @@ namespace GiftCardManagementSystem.Admin.Features.Payment
             {
                 bool isExist = _db.TblPaymentmethods.Any(x => x.PaymentMethodName == reqModel.PaymentMethodName);
 
-                if (true)
+                if (isExist)
                 {
                     model.Response = SubResponseModel.SuccessResponse("Dulplicate Paymethod Name.", RespType.MS);
                     goto Result;
                 }
 
-                TblPaymentmethod paymentmethod = new TblPaymentmethod()
+                var paymentmethod = new TblPaymentmethod()
                 {
+                    PaymentMethodCode = reqModel.PaymentMethodCode,
                     PaymentMethodName = reqModel.PaymentMethodName,
                     Discount = reqModel.Discount,
+                    Active = true
                 };
 
                 _db.TblPaymentmethods.Add(paymentmethod);

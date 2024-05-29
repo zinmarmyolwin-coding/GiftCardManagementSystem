@@ -1,45 +1,73 @@
 ﻿using GiftCardManagementSystem.Admin.Models.GiftCard;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GiftCardManagementSystem.Admin.Features.GiftCard
 {
-    public class PaymentController : Controller
+    public class GiftCardController : Controller
     {
-        private readonly PaymentService _giftCardService;
+        private readonly GiftCardService _giftCardService;
 
-        public PaymentController(PaymentService giftCardService)
+        public GiftCardController(GiftCardService giftCardService)
         {
             _giftCardService = giftCardService;
         }
 
         [HttpGet]
-        public ActionResult GiftCardList()
+        public IActionResult GiftCardList()
         {
-            var result = _giftCardService.GiftCardList();
-            return View(result);
+            var model = new GiftCardResponseModel();
+            model = _giftCardService.GiftCardList();
+            return View(model);
         }
 
-        [HttpPost]
-        public ActionResult GiftCardCreate(GiftCardRequestModel reqModel)
+        [HttpGet]
+        public IActionResult GiftCardCreate()
         {
-            var result = _giftCardService.GiftCardCreate(reqModel);
-            return View(result);
-        }
-
-
-        [HttpPost]
-        public ActionResult GiftCardById(GiftCardRequestModel reqModel)
-        {
-            var result = _giftCardService.GiftCardById(reqModel);
             return View();
         }
 
         [HttpPost]
-        public ActionResult GiftCardEdit(GiftCardRequestModel reqModel)
+        public IActionResult GiftCardCreate(GiftCardRequestModel reqModel)
         {
-            var result = _giftCardService.GiftCardEdit(reqModel);
-            return View(result);
+            if (ModelState.IsValid)
+            {
+                var result = _giftCardService.GiftCardCreate(reqModel);
+                if (result.Response.IsError)
+                {
+                    ViewBag.ErrorMessage = result.Response.RespDesp;
+                    return View(reqModel);
+                }
+                return RedirectToAction("GiftCardList", "GiftCard");
+            }
+          
+            return View(reqModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult GiftCardEdit(int id)
+        {
+            var model = new GiftCardResponseModel();
+            model = _giftCardService.GiftCardById(id);
+            return View(model.GiftCard);
+        }
+
+        [HttpPost]
+        public IActionResult GiftCardEdit(GiftCardRequestModel reqModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _giftCardService.GiftCardEdit(reqModel);
+                if (result.Response.IsError)
+                {
+                    ViewBag.ErrorMessage = result.Response.RespDesp;
+                    return View(reqModel);
+                }
+                return RedirectToAction("GiftCardList", "GiftCard");
+            }
+            return View(reqModel);
         }
     }
 }

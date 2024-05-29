@@ -1,8 +1,39 @@
-﻿
+﻿@model GiftCardManagementSystem.Admin.Models.Payment.PaymentResponseModel
 @{
+    int counter = 0;
     ViewData["Title"] = "PaymentList";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h2 class="mb-4">Payment List</h2>
 
-<h1>PaymentList</h1>
+@Html.ActionLink("Create", "PaymentCreate", "Payment", null, new { @class = "btn btn-primary" })
+<br />
+<br />
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Payment Method Name</th>
+                <th>Discount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model.PaymentList?.Count > 0)
+            {
+                @foreach (var user in Model.PaymentList)
+                {
+                    counter++;
+                    <tr>
+                        <td>@counter</td>
+                        <td>@user.PaymentMethodName</td>
+                        <td>@user.Discount</td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>
 

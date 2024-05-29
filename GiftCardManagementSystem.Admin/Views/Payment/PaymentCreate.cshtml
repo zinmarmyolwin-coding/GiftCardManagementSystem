@@ -1,0 +1,29 @@
+﻿@model GiftCardManagementSystem.Admin.Models.Payment.PaymentRequestModel
+@{
+    var paymentList = ViewBag.PaymentMethodList;
+}
+<h2 class="mb-4">Create Payment Method</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <p style="color:red">@ViewBag.ErrorMessage</p>
+        }
+
+        @using (Html.BeginForm("PaymentCreate", "Payment", FormMethod.Post))
+        {
+            <div class="mb-3">
+                @Html.LabelFor(m => m.PaymentMethodName, new { @class = "col-md-3 col-sm-4 control-label" })
+                @Html.DropDownListFor(m => m.PaymentMethodCode, (IEnumerable<SelectListItem>)paymentList.Items, "--- Select Payment Method ---", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PaymentMethodCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Discount, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Discount, new { @class = "form-control", @placeholder = "Discount", type = "number", min = "0" })
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        }
+
+    </div>
+</div>

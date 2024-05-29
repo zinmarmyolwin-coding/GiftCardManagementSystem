@@ -1,11 +1,12 @@
 ﻿using GiftCardManagementSystem.Admin.Models.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GiftCardManagementSystem.Admin.Features.Admin
 {
-    [Authorize]
     public class AdminController : Controller
     {
         private readonly AdminService _adminService;
@@ -14,27 +15,71 @@ namespace GiftCardManagementSystem.Admin.Features.Admin
         {
             _adminService = adminService;
         }
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> AdminList()
+        {
+            AdminUserResponseModel model = new AdminUserResponseModel();
+            model = await _adminService.AdminList();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AdminRegister()
+        {
+            var roleList = await UserRoleList(); // Assuming UserRoleList() method retrieves the list of roles
+            ViewBag.RoleList = roleList;
+            return View();
+        }
+
+        public async Task<UserRoleModel> UserRoleList()
+        {
+            var model = new UserRoleModel();
+            model.Items = new List<SelectListItem>()
+            {
+                new SelectListItem { Value = "Admin", Text = "Admin" },
+                new SelectListItem { Value = "Approver", Text = "Approver" },
+                new SelectListItem { Value = "Manager", Text = "Manager" }
+            };
+
+            return model;
+        }
 
         [HttpPost]
         public ActionResult AdminRegister(AdminUserRegisterRequestModel reqModel)
         {
-            var result = _adminService.AdminRegister(reqModel);
-            return View(result);
+            if (ModelState.IsValid)
+            {
+                var result = _adminService.AdminRegister(reqModel);
+                return Redirect("AdminList");
+            }
+            return View(reqModel);
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult Signin(string returnUrl)
+        public IActionResult Signin(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             return View(new SigninRequestModel());
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public ActionResult Signin(SigninRequestModel reqModel)
+        public IActionResult Signin(SigninRequestModel reqModel)
         {
-            var result = _adminService.Signin(reqModel);
-            return View(result);
+            var result = new AdminUserResponseModel();
+            if (ModelState.IsValid)
+            {
+                result = _adminService.Signin(reqModel);
+                if (result.Response.IsError)
+                {
+                    ViewBag.ErrorMessage = result.Response.RespDesp;
+                    return View(reqModel);
+                }
+                return RedirectToAction("AdminList", "Admin");
+            }
+            return View(reqModel);
         }
     }
 }

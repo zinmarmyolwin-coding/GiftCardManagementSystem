@@ -1,22 +1,45 @@
 ﻿@model GiftCardManagementSystem.Admin.Models.Admin.SigninRequestModel
 @{
+    Layout = null;
     ViewData["Title"] = "Signin";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/GiftCardManagementSystem.Admin.styles.css" asp-append-version="true" />
 
-<h1>Signin</h1>
 
-@using (Html.BeginForm("Admin", "AdminRegister", FormMethod.Post))
-{
-    <div>
-        @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User Name'" })
-        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+<body class="d-flex align-items-center justify-content-center vh-100" style="background-color:#92c3ee;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <p style="color:red">@ViewBag.ErrorMessage</p>
+                }
+                @using (Html.BeginForm("Signin", "Admin", FormMethod.Post))
+                {
+                    <div class="card">
+                        <div class="card-body" style="margin: 100px 40px;">
+                            <h3 class="card-title text-center" style="margin-bottom:40px">Sign In</h3>
+                            <div class="mb-3">
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User Name'" })
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="mb-3">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'Password'" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="d-grid" style="margin-top:40px">
+                                <input type="submit" value="Sign In" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    <div>
-        @Html.TextBoxFor(m => m.Password, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User Name'" })
-        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-        @* <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required /> *@
-    </div>
-    <input type="submit" value="Sign In" class="login-btn" />
-}
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>

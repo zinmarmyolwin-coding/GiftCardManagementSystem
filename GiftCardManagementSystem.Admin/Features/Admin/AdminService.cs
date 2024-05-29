@@ -2,6 +2,7 @@
 using GiftCardManagementSystem.Admin.Models;
 using GiftCardManagementSystem.Admin.Models.Admin;
 using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -16,6 +17,28 @@ namespace GiftCardManagementSystem.Admin.Features.Admin
             _db = db;
         }
 
+        public async Task<AdminUserResponseModel> AdminList()
+        {
+            var model = new AdminUserResponseModel();
+            try
+            {
+                var adminList = await _db.TblAdminusers.AsNoTracking().ToListAsync();
+
+               model.AdminList = adminList.Select(x  => new AdminModel
+               {
+                  UserName = x.UserName,
+                  Role = x.UserRole
+               }).ToList();
+
+                model.Response = SubResponseModel.SuccessResponse("Success",RespType.MS);
+            }
+            catch (Exception ex)
+            {
+                model.Response = SubResponseModel.SuccessResponse(ex?.Message, RespType.MS);
+            }
+            return model;
+        }
+
         public AdminUserResponseModel AdminRegister(AdminUserRegisterRequestModel reqModel)
         {
             var model = new AdminUserResponseModel();
@@ -26,7 +49,7 @@ namespace GiftCardManagementSystem.Admin.Features.Admin
                 {
                     UserId = Guid.NewGuid().ToString(),
                     UserName = reqModel.UserName,
-                    Password = reqModel.Password,
+                    Password = password,
                     UserRole = reqModel.UserRole,
                     DelFlag = false
                 };
@@ -54,7 +77,7 @@ namespace GiftCardManagementSystem.Admin.Features.Admin
                                               & a.DelFlag == false);
                 if (adminUser is null)
                 {
-                    model.Response = SubResponseModel.SuccessResponse("SignIn fail.", RespType.MS);
+                    model.Response = SubResponseModel.SuccessResponse("SignIn fail.", RespType.ME);
                     goto Result;
                 }
 

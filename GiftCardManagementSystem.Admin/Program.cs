@@ -1,4 +1,7 @@
 using GiftCardManagementSystem.Admin.Features.Admin;
+using GiftCardManagementSystem.Admin.Features.GiftCard;
+using GiftCardManagementSystem.Admin.Features.Payment;
+using GiftCardManagementSystem.Admin.Features.User;
 using GiftCardManagementSystem.Infrastructure.AppDbContextModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -17,6 +20,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 #endregion
 
 builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<GiftCardService>();
+builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<UserService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -42,6 +48,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     //pattern: "{controller=Home}/{action=Index}/{id?}");
-    pattern: "{controller=Admin}/{action=Signin}/{id?}");
+    pattern: "{controller=GiftCard}/{action=GiftCardList}");
 
 app.Run();

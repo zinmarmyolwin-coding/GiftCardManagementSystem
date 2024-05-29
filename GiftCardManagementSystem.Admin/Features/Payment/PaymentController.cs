@@ -1,7 +1,12 @@
-﻿using GiftCardManagementSystem.Admin.Models.GiftCard;
+﻿using GiftCardManagementSystem.Admin.Features.GiftCard;
+using GiftCardManagementSystem.Admin.Models.Admin;
+using GiftCardManagementSystem.Admin.Models.GiftCard;
 using GiftCardManagementSystem.Admin.Models.Payment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GiftCardManagementSystem.Admin.Features.Payment
 {
@@ -15,17 +20,51 @@ namespace GiftCardManagementSystem.Admin.Features.Payment
         }
 
         [HttpGet]
-        public ActionResult PaymentList()
+        public IActionResult PaymentList()
         {
-            var result = _paymentService.PaymentList();
-            return View(result);
+            var model = new PaymentResponseModel();
+            model = _paymentService.PaymentList();
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult PaymentCreate()
+        {
+            ViewBag.PaymentMethodList = PaymentMethodList();
+            return View();
+        }
+
+        public PaymentMethodModel PaymentMethodList()
+        {
+            var model = new PaymentMethodModel();
+            model.Items = new List<SelectListItem>()
+            {
+                new SelectListItem { Value = "KPAY", Text = "KBZ PAY" },
+                new SelectListItem { Value = "AYAPAY", Text = "AYA PAY" },
+                new SelectListItem { Value = "WAVEMONEY", Text = "WAVE MONEY" }
+            };
+
+            return model;
         }
 
         [HttpPost]
-        public ActionResult PaymentCreate(PaymentRequestModel reqModel)
+        public IActionResult PaymentCreate(PaymentRequestModel reqModel)
         {
-            var result = _paymentService.PaymentCreate(reqModel);
-            return View(result);
+            reqModel.PaymentMethodName = PaymentMethodList().Items.FirstOrDefault(x => x.Value == reqModel.PaymentMethodCode).Text!;
+            if (!ModelState.IsValid)
+            {
+                var result = _paymentService.PaymentCreate(reqModel);
+                if (result.Response.IsError)
+                {
+                    ViewBag.ErrorMessage = result.Response.RespDesp;
+                    goto Result;
+                }
+                return RedirectToAction("PaymentList", "Payment");
+
+            }
+            Result:
+            ViewBag.PaymentMethodList = PaymentMethodList();
+            return View(reqModel);
         }
     }
 }

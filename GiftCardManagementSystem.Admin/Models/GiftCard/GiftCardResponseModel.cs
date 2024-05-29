@@ -3,7 +3,7 @@
     public class GiftCardResponseModel : BaseResponseModel
     {
         public List<GiftCardModel> GiftCardList { get; set; }
-        public GiftCardModel GiftCard { get; set; }
+        public GiftCardRequestModel GiftCard { get; set; }
     }
     public class GiftCardModel
     {
@@ -14,6 +14,8 @@
         public string ExpiryDate { get; set; }
         public decimal? Amount { get; set; }
         public int Quantity { get; set; }
+        public decimal CashbackAmount { get; set; }
+        public int CashbackPoint { get; set; }
         public bool IsActive { get; set; }
     }
 }
