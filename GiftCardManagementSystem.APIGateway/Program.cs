@@ -83,11 +83,4 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 app.MapControllers();
 
-#region Rebbit
-
-//var concurrencyService = app.Services.GetRequiredService<RabbitMqConcurrencyService>();
-//concurrencyService.Start();
-
-#endregion
-
 app.Run();

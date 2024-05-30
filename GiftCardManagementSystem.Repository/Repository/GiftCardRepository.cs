@@ -128,7 +128,7 @@ namespace GiftCardManagementSystem.Repository.Repository
                             UserId = userId,
                             CreatedDate = DateTime.Now,
                             TotalAmount = totalAmount,
-                            CashbackAmount = cashBackAmount,
+                            BackCashbackAmount = cashBackAmount,
                             Status = EumTransactionStatus.Process.ToString()
                         };
 
@@ -235,7 +235,8 @@ namespace GiftCardManagementSystem.Repository.Repository
 
                 decimal? netAmount = reqModel.TotalAmount - (cashbackAmount + discountAmount);
 
-                var tbltransactionHistory = await _db.TblTransactionhistories.FirstOrDefaultAsync(x => x.TranId == reqModel.TranId);
+                var tbltransactionHistory = await _db.TblTransactionhistories.FirstOrDefaultAsync(x => x.TranId == reqModel.TranId
+                & x.Status == EumTransactionStatus.Process.ToString());
 
                 if (tbltransactionHistory is null) goto Result;
 
@@ -248,6 +249,7 @@ namespace GiftCardManagementSystem.Repository.Repository
                         tbltransactionHistory.TransactionDate = DateTime.Now;
                         tbltransactionHistory.NetAmount = netAmount;
                         tbltransactionHistory.DiscountAmount = discountAmount;
+                        tbltransactionHistory.CashbackAmount = cashbackAmount;
                         tbltransactionHistory.PaymentCode = reqModel.PaymentCode;
                         tbltransactionHistory.IsUsedCahback = (bool)isUsedCashback;
                         tbltransactionHistory.Status = EumTransactionStatus.Paid.ToString();
@@ -269,6 +271,7 @@ namespace GiftCardManagementSystem.Repository.Repository
                             item.Status = EumTransactionStatus.Paid.ToString();
 
                             _db.TblTransactionhistorydetails.Update(item);
+
                             await _db.SaveChangesAsync();
                         }
 
@@ -295,8 +298,6 @@ namespace GiftCardManagementSystem.Repository.Repository
                         await _db.SaveChangesAsync();
 
                         #endregion
-
-
 
                         await tran.CommitAsync();
 

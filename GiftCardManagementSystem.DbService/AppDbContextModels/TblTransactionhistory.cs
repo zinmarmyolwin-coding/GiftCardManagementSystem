@@ -23,6 +23,8 @@ public partial class TblTransactionhistory
 
     public decimal? CashbackAmount { get; set; }
 
+    public decimal? BackCashbackAmount { get; set; }
+
     public string? Status { get; set; }
 
     public string? PaymentCode { get; set; }

@@ -80,6 +80,7 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("tbl_transactionhistory");
 
+            entity.Property(e => e.BackCashbackAmount).HasPrecision(10, 2);
             entity.Property(e => e.CashbackAmount).HasPrecision(10, 2);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.DiscountAmount).HasPrecision(10, 2);
