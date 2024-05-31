@@ -33,6 +33,7 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
         public IActionResult GetToken([FromBody] LoginModel model)
         {
             _concurrencyService.PublishMessage("refresh_request");
+          
             // Validate username and password
             if (!ValidateUser(model.Username, model.Password))
             {
@@ -42,13 +43,8 @@ namespace GiftCardManagementSystem.APIGateway.Controllers
             var accessToken = GenerateJwtToken(model.Username);
             var refreshToken = GenerateRefreshToken();
 
-            // Store the refresh token securely
             StoreRefreshToken(model.Username, refreshToken);
-
-            // Set refresh token as HttpOnly cookie
             SetRefreshTokenCookie(refreshToken);
-
-            // Calculate expiration date for the access token
             var tokenExpiration = DateTime.UtcNow.AddDays(int.Parse(_configuration["Jwt:RefreshTokenValidityInDays"]));
 
             return Ok(new
